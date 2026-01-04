@@ -1337,7 +1337,7 @@ def print_banner():
 ██║     ███████╗██║███████║   ██║      ██║           ██████╔╝██████╔╝╚██████╔╝███████║
 ╚═╝     ╚══════╝╚═╝╚══════╝   ╚═╝      ╚═╝           ╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝
                                                                                       
-  Made By:  feisty!      https://guns.lol/feisty7
+  Made By:  feisty!      https://guns.lol/feisty7  https://github.com/feisty-writer7/DDOS-TOOL-V1.git
 """
     for line in banner.splitlines():
         print(f"{Fore.RED}{line.center(columns)}{Fore.RESET}")
