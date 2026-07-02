@@ -11,3 +11,6 @@ glob
 Cryptodome.Cipher
 win32crypt
 requests
+sys
+socket
+platform
